@@ -1,0 +1,282 @@
+
+{% extends 'main_app/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Пошук загублених домашніх тварин у м. Хмельницькому{% endblock %}
+
+{% block header-type %}
+<header class="main_header">
+{% endblock %}
+
+{% block header %}
+<div class="row text-center">
+    <h1>Пошук втрачених домашніх<br>улюбленців у м. Хмельницькому</h1>
+</div>
+<div class="row">
+       {% if request.user.is_authenticated %}
+            <div class="col-md-6">
+                <button type="button" onClick="location.href='{% url 'main_app:report_create' %}'" id="header_bt_1">Я <span>втратив</span> домашнього улюбленця</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" onClick="location.href='{% url 'main_app:report_create' %}'" id="header_bt_2">Я <span>знайшов</span> домашнього улюбленця</button>
+            </div>
+        {% else %}
+            <div class="col-md-6">
+                <button type="button" data-toggle="modal" data-target="#lost-pet-not-auth" id="header_bt_1">Я <span>втратив</span> домашнього улюбленця</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" data-toggle="modal" data-target="#found-pet-not-auth" id="header_bt_2">Я <span>знайшов</span> домашнього улюбленця</button>
+            </div> 
+       {% endif %}
+{% endblock %}
+
+{% block body %}
+
+<section id="about_counter">
+    <div class="container">
+        <div class="row">
+            <div class="section_header text-center">
+                <h3>Ми працюємо з 2009 року</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="couner_num_align col-md-3 col-md-offset-1">
+                <div class="card">
+                    <img src="{% static 'main_app/images/about/about_1.svg' %}" alt="Наші досягнення" class="img-responsive center-block">
+                    <h4>Повідомлено про<br>знайдених домашніх<br>улюбленців</h4>
+                </div>
+                <div class="counter_num">
+                    <span><h3>{{index_counter.k2}}</h3></span>
+                </div>
+            </div>
+            <div class="couner_num_align col-md-3">
+                <div class="card">
+                    <img src="{% static 'main_app/images/about/about_2.svg' %}" alt="Наші досягнення" class="img-responsive center-block">
+                    <h4>Скільки домашніх<br>улюбленців знайшли<br>нову сім'ю</h4>
+                </div>
+                <div class="counter_num" id="counter_count_5_symbol">
+                    <span><h3>{{index_counter.k3}}</h3></span>
+                </div>
+            </div>
+            <div class="couner_num_align col-md-3">
+                <div class="card">
+                    <img src="{% static 'main_app/images/about/about_3.svg' %}" alt="Наші досягнення" class="img-responsive center-block">
+                    <h4>Повідомлено про<br>втрачених домашніх<br>улюбленців</h4>
+                </div>
+                <div class="counter_num">
+                    <span><h3>{{index_counter.k1}}</h3></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="found_lost_db">
+   <div class="container">
+       <div class="row text-center">
+           <div class="found_pet_db col-md-6">
+               <div class="row">
+                   <div class="block_header">
+                        <h4>База даних знайдених<br>домашніх улюбленців</h4>
+                   </div>
+               </div>
+               <div class="row">
+                  <div class="block_p">
+                      <p>Тут розміщені всі об'яви про знайдених домашніх<br>улюбленців, які ще не знайшли свою домівку.<br>
+                   Якщо Ви загубили свою домашню тварину,<br>то є велика вірогідність того, що її хтось вже<br>
+                   знайшов і подав об'яву про знайденого<br>домашнього улюбленця.</p>
+                   <p>Для того, щоб продивитися доску об'яв<br>знайдених домашніх улюбленців, натисніть<br>
+                   на кнопку "Перейти до бази даних"</p>
+                  </div>
+               </div>
+               <div class="row">
+                   <a href="{% url 'main_app:all_found_report' %}" id="found_lost_db_bt_2">Перейти до бази даних</a>
+               </div>
+           </div>
+           <div class="lost_pet_db col-md-6">
+               <div class="row">
+                   <div class="block_header">
+                        <h4>База даних загублених<br> домашніх улюбленців</h4>
+                    </div>
+               </div>
+               <div class="row">
+                  <div class="block_p">
+                      <p>Тут розміщені всі об'яви про загублених домашніх<br>улюбленців.<br>Якщо Ви знайшли домашню тварину, яка<br>
+                   загубилася, допоможіть знайти її домівку,<br>адже десь є любляча людина чи ціла сім'я,<br>які її шукають.</p>
+                   <p>Для того, щоб продивитися доску об'яв<br>загублених домашніх улюбленців, натисніть<br>
+                   на кнопку "Перейти до бази даних"</p>
+                  </div>
+               </div>
+               <div class="row">
+                   <a href="{% url 'main_app:all_search_report' %} " id="found_lost_db_bt_1">Перейти до бази даних</a>
+               </div>
+           </div>
+       </div>
+   </div>
+</section>
+
+ <section id="what_say">
+    <div class="carousel slide" id="carousel">
+       <div class="container">
+            <div class="row">
+               <div class="section_header text-center">
+                   <h3>Що про нас кажуть люди</h3>
+               </div>
+            </div>
+            <div class="row text-center">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <blockquote>
+                                <p>"Дуже вдячна за Вашу допомогу. Скажу чесно, що вже відчаялася знайти<br> свого улюбленця, доки не звернулася до вашої організації. Величезне спасибі!!!"</p>
+                                <footer class="text-right">Lara_001</footer>
+                            </blockquote>
+                        </div>
+                        <div class="item">
+                           <blockquote>
+                            <p>"Спасибі за оперативну роботу. Наша сім'я знову вся у зборі.<br> Будемо розповідати про Вашу організацію друзям."</p>
+                            <footer class="text-right">Dan_Carsoon</footer>
+                            </blockquote>
+                       </div>
+                    </div>
+                    <a href="#carousel" class="left carousel-control" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </a>
+                    <a href="#carousel" class="right carousel-control" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+ </section>
+
+<section id="become_volunteer">
+   <div class="container">
+       <div class="row text-center">
+           <div class="col-md-5 col-md-offset-1">
+               <div class="row">
+                   <div class="block_header">
+                       <h4>Я хочу стати волонтером</h4></div>
+                   </div>
+               <div class="row">
+                  <div class="block_p">
+                      <p>Наша організація займається пошуком<br>
+втрачених домашніх тварин у м Хмельницькому<br> 
+з 2009 року. За час роботи організації ми застосували<br>
+багато новаторських ідей у нашій роботі.<br>
+Однією з них є залучення волонтерів для розширення<br>
+та покращення діяльності організації.</p>
+
+<p>Розвитку програми волонтерства у організації пошуку<br> 
+домашніх тварин в м Хмельницькому сприяло<br>
+Міністерство молоді та спорту України для залучення<br>
+до процесу діяльності організації молодь<br>
+міста Хмельницького.</p>
+
+<p>Для того, щоб детальніше прочитати про програму<br>
+волонтерства або щоб прийняти участь у програмі<br>
+натисність на кнопку "Дізнатися більше".</p>
+                  </div>
+               </div>
+               <div class="row">
+                   <button type="button" id="volunteer_bt">Дізнатися більше</button>
+               </div>
+           </div>
+           <div class="col-md-5">
+               <img src="{% static 'main_app/images/become_volunteer.png' %}" alt="Я хочу стати волонтером">
+           </div>
+       </div>
+   </div>
+</section>
+
+<section id="our_services">
+    <div class="container">
+        <div class="row">
+            <div class="section_header text-center">
+                <h3>Основні послуги, якими ви можете скористатися</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-2 col-md-offset-2">
+                <div class="card">
+                    <img src="{% static 'main_app/images/services/service_1.svg' %}" alt="Наші послуги" class="img-responsive center-block">
+                    <h4>Знайти втраченого<br>домашнього улюбленця</h4>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card">
+                    <img src="{% static 'main_app/images/services/service_2.svg' %}" alt="Наші послуги" class="img-responsive center-block">
+                    <h4>Повідомити про знайденого<br>домашнього улюбленця</h4>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card">
+                    <img src="{% static 'main_app/images/services/service_3.svg' %}" alt="Наші послуги" class="img-responsive center-block">
+                    <h4>Знайти домашнього<br>улюбленця "у добрі руки"</h4>
+                    <br>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card">
+                    <img src="{% static 'main_app/images/services/service_4.svg' %}" alt="Наші послуги" class="img-responsive center-block">
+                    <h4>Знайти для свого<br>домашнього улюбленця<br>тимчасового власника</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="shelter">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                <img src="{% static 'main_app/images/good_hands.jpg' %}" alt="Віддам у добрі руки">
+            </div>
+            <div class="shelter_content col-md-4 text-center">
+               <div class="shelter_content_align">
+                   <div class="shelter_header row">
+                <h4>Віддам у добрі руки</h4>
+                </div>
+                <div class="shelter_p row">
+                   <p>В житті бувають ситуації, за яких<br>Ви більше не можете доглядати<br>
+                   за своїм домашнім улюбленцем.<br>Якщо така ситуація настала, що тоді<br>
+                   робити з вашою домашньою твариною?<br>Тут Ви можете подати об'яву і знайти<br>
+                   для свого домашнього улюбленця<br>нових люблячих власників.</p>
+                </div>
+                <div class="row">
+                   <a href="{% url 'main_app:all_gift_report' %}" id="volunteer_bt">Дізнатися більше</a>
+                </div>
+               </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="shelter_content col-md-4 col-md-offset-2 text-center">
+                <div class="shelter_content_align">
+                    <div class="shelter_header row"><h4>Знайти тимчасовий<br>притулок</h4>
+                    </div>
+                    <div class="shelter_p row">
+                       <p>Якщо Вам потрібно тимчасово<br>відлучитися з міста, по роботі чи<br>
+                       по, будь якій, іншій причині, але<br>нікому залишити домашнього<br>
+                       улюбленця, то можете скористатися<br>послугою "знайти тимчасовий<br>притулок".</p>
+                    </div>
+                    <div class="row">
+                       <a href="{% url 'main_app:all_shelter_report' %} " id="volunteer_bt">Дізнатися більше</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <img src="{% static 'main_app/images/good_hands2.jpg' %}" alt="Знайти тимчасовий притулок">
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+

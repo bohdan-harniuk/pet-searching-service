@@ -1,0 +1,68 @@
+{% extends 'main_app/user-base.html' %}
+
+{% load staticfiles %}
+{% load app_tags %}
+
+{% block title %}Бесіда{% endblock %}
+
+{% block content %}
+
+<div id="content-wrapper">
+    <div class="container-fluid">
+       <div class="row">
+
+<div class="panel panel-default" id="chat-body">
+    <div class="panel-heading text-center">Бесіда з {% get_user chat.receiver 'username' %} </div>
+    <div class="panel-body" id="msg-list-body">
+        <ul id="msg-list">
+           
+           {% for obj in messages %}
+           <li class="chat chat-small row">
+                <div class="col-xs-2 col-sm-4 col-lg-4">
+                   <div class="chat-avatar hidden-xs">
+                        <img src="/media/{{ sender.profile.avatar|default:'avatar.jpg' }}" alt="Аватар" class='img img-circle img-responsive img-center'/>
+                    </div>
+                    <div class="chat-info">
+                        <span class="small">
+                            {{sender.username}}
+                            <br>
+                            {{obj.created}}
+                        </span>
+                    </div>
+               </div>
+               <div class="col-xs-10 col-sm-8 col-lg-8">
+                    <div class="chat-message">
+                        {{obj.message}}
+                    </div>
+               </div>
+            </li>
+           {% endfor %}
+           <script>
+                var charlist = document.getElementById('msg-list-body');
+                charlist.scrollTop = charlist.scrollHeight;
+            </script>
+        </ul>
+
+    </div>
+</div>            
+
+            
+            
+            
+<form class="form-horizontal send-message-form" role="form" method="post" action="/post/" id="chat-form">
+  <div class="form-group">
+    <div class="col-sm-10">
+      <textarea class="form-control" rows="3" name="chat-msg" id="chat-msg"></textarea>
+    </div>
+    <div class="col-sm-2">
+      <button type="submit" id="chat-bt">Відправити</button>
+    </div>
+  </div>
+</form>
+            
+
+       </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends 'main_app/user-base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Діалоги{% endblock %}
+
+{% block content %}
+
+<div id="content-wrapper">
+    <div class="container-fluid">
+       <div class="row">
+           
+        <div class="panel panel-default" id="chat-body">
+            <div class="panel-heading text-center"><h4>Всі повідомлення</h4></div>
+            <div class="panel-body" id="msg-list-body">
+                <ul id="msg-list">
+                    {% for obj in chat %}
+                        <li class="chat row">
+                           <div class="col-xs-2 col-sm-4 col-lg-3">
+                               <div class="chat-avatar hidden-xs">
+                                    <img src="{% static 'main_app/images/avatar.jpg' %}" alt="Аватар" class='img img-circle img-responsive img-center'/>
+                                </div>
+                                <div class="chat-info">
+                                    <span class="small">
+                                        {{ obj.receiver }}
+                                        <br>
+                                        {{ obj.created }}
+                                        <br>
+                                        <a href="{% url 'main_app:user_chat'  %}">відкрити</a>
+                                    </span>
+                                </div>
+                           </div>
+                           <div class="col-xs-10 col-sm-8 col-lg-9">
+                                <div class="chat-message">
+                                    {{ obj.message }}
+                                </div>
+                                <div class="chat-del">
+                                    <button class="close" type="button">&times;</button>
+                                </div>
+                           </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-info">Діалоги відсутні!</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+</div>
+
+       </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block modal %}
+
+<div class="modal fade" id="add_message">
+    <div class="modal-dialog add_message modal-md">
+        <div class="modal-content">
+            <div class="modal-header add_report_header">
+                <button class="close col-md-1" type="button" data-dismiss="modal">
+                &times;
+                </button>
+                <h5 class="modal-title col-md-6">Нове повіломлення</h5>
+                <a href="{% url 'main_app:user_message' %}" class="col-md-5 text-right">Перейти до моїх повідомлень</a>
+            </div>
+            <form role="form" action="" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                <div class="modal-body row">
+                       <div class="col-sm-12">
+
+                                
+                                 <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form1.receiver.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form1.receiver.label_tag}}</label>
+                                      <div class="col-sm-12">{{form1.receiver}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form1.message.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form1.message.label_tag}}</label>
+                                      <div class="col-sm-12">{{form1.message}}</div>
+                                  </div>
+
+                       </div>
+                </div>
+                <div class="modal-footer">
+                  <div class="row">
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                           <button class="btn btn-success modal_message" type="submit">Відправити повідомлення</button>
+                           </div>
+                      </div>
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                            <button class="btn btn-info modal_reg_auth_exit" type="button" onClick="location.href='{% url 'main_app:user_reports'  %}'">Відмінити</button>
+                            </div>
+                      </div>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+  
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#add_message').modal('show');
+    });
+</script>
+    
+{% endblock %}

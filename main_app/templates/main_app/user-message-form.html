@@ -1,0 +1,46 @@
+{% load staticfiles %}
+{% load app_tags %}
+<div id="content-wrapper">
+    <div class="container-fluid">
+       <div class="row">
+           
+        <div class="panel panel-default" id="chat-body">
+            <div class="panel-heading text-center"><h4>Всі повідомлення</h4></div>
+            <div class="panel-body" id="msg-list-body0">
+                <ul id="msg-list0">
+                    {% for receiver, message in chats.items %}
+                        <li class="chat row">
+                           <div class="col-xs-2 col-sm-4 col-lg-4">
+                               <div class="chat-avatar hidden-xs">
+                                    <img src="/media/{{ receiver.profile.avatar|default:'avatar.jpg' }}" alt="Аватар" class='img img-circle img-responsive img-center'/>
+                                </div>
+                                <div class="chat-info">
+                                    <span class="small">
+                                        {% get_user message.receiver 'username' %}
+                                        <br>
+                                        {{ message.created }}
+                                        <br>
+                                        <a href="{% url 'main_app:user_chat' message.chat.id  %}">відкрити</a>
+                                    </span>
+                                </div>
+                           </div>
+                           <div class="col-xs-10 col-sm-8 col-lg-8">
+                                <div class="chat-message">
+                                    {{ message.message }}
+                                </div>
+                                <div class="chat-del">
+                                    <button class="close" type="button">&times;</button>
+                                </div>
+                           </div>
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-info">Діалоги відсутні!</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+</div>
+
+       </div>
+    </div>
+</div>

@@ -1,0 +1,61 @@
+{% extends 'main_app/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Втрачені домашні тварини у м. Хмельницькому{% endblock %}
+
+
+{%block body%}
+<div id="content-wrapper">
+    <div class="container">
+        <div class="row user-content">
+            <div class="col-md-4">
+                <div class="user-avatar text-center">
+                       <img src="/media/{{ user.profile.avatar|default:'avatar.jpg' }}" alt="Аватар" class='img img-responsive img-center'/>
+                       <h3>{{user.username}}</h3>
+                   </div>
+                <ul class="about-user">
+                    {%if user.email %}<li class="item"><b>Поштова адреса: </b><i>{{user.email}}</i></li>{% endif %}
+                    {%if user.profile.name %}<li class="item"><b>Ім'я: </b><i>{{user.profile.name}}</i></li>{% endif %}
+                    {%if user.profile.surname %}<li class="item"><b>Прізвище: </b><i>{{user.profile.surname}}</i></li>{% endif %}
+                    {%if user.profile.main_phone %}<li class="item"><b>Номер телефону: </b><i>{{user.profile.main_phone}}</i></li>{% endif %}
+                    {%if user.profile.alternate_phone %}<li class="item"><b>Додатковий номер тел.: </b><i>{{user.profile.alternate_phone}}</i></li>{% endif %}
+                    {%if user.profile.address.region %}<li class="item"><b>Район: </b><i>{{user.profile.address.region}}</i></li>{% endif %}
+                    {%if user.profile.address.street %}<li class="item"><b>Вулиця: </b><i>{{user.profile.address.street}}</i> {%if user.profile.address.house_num %}<i>{{user.profile.address.house_num}}</i> {% endif %}</li> {% endif %}
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="panel panel-default" id="chat-body">
+                <div class="panel-heading text-center"><h4>Об'яви користувача: {{user.username}}</h4></div>
+                <div class="panel-body" id="msg-list-body">
+                <ul class="row masonry user-report" data-columns>
+                    {% for report in reports %}
+                   <li class="item">
+                       <div class="thumbnail">
+                            <div class="report-detail-img">
+                                <a href="{% url 'main_app:user_report_detail' report.id %}"><img src="{{ report.pet.pet_img.url }}" alt="Об'ява {{report.id}}" class="img-responsive report-detail-img"/></a>
+                            </div>
+                            <div class="caption">
+                                <h3><a href="{% url 'main_app:user_report_detail' report.id %}">{% if report.pet.name %} {{report.pet.name}} {%else%} {{report.pet.pet_breed.breed_title}} {%endif%}</a></h3><span class='small'>{{report.created}}</span>
+                                <p>Район: {{report.address.region}}
+                                {% if report.address.street %}, вул. {{report.address.street}}
+                                {% endif %}
+                                </p>
+                                <p>{{report.ident_det}}</p>
+                                <a href="{% url 'main_app:user_report_detail' report.id %}" class="btn btn-success">Детальніше</a>
+                            </div>
+                        </div>
+                   </li>
+                    {% endfor %}
+                </ul>
+                 {% ifequal reports_count 0 %}
+                    <ul style="padding-left:0px;"><li class="list-group-item text-info text-center">Об'яви відсутні!</li></ul> 
+                {% endifequal%}
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+{%endblock%}

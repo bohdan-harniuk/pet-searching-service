@@ -1,0 +1,86 @@
+{% extends 'main_app/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Знайдені домашні тварини у м. Хмельницькому{% endblock %}
+
+
+{%block body%}
+<section id="found_lost_db_section">
+    <div class="container">
+       <div class="row text-center">
+           <div class="col-md-12">
+               <div class="row">
+                       <div class="block_header">
+                            <h3>База даних знайдених домашніх улюбленців</h3>
+                        </div>
+                   </div>
+                   <div class="row">
+                      <div class="block_p">
+                          <p>Тут розміщені всі об'яви про знайдених домашніх улюбленців, які ще не знайшли свою домівку.<br>
+                   Якщо Ви загубили свою домашню тварину, то є велика вірогідність того, що її хтось вже<br>
+                   знайшов і подав об'яву про знайденого домашнього улюбленця.</p>
+                      </div>
+                   </div>
+           </div>
+       </div>
+    </div>
+</section>
+<div id="content-wrapper">
+    <ul class="row masonry user-report" data-columns>
+      {% for report in reports %}
+       <li class="item">
+           <div class="thumbnail">
+                <div class="report-detail-img">
+                    <a href="{% url 'main_app:user_report_detail' report.id %}"><img src="{{ report.pet.pet_img.url }}" alt="Об'ява {{report.id}}" class="img-responsive report-detail-img"/></a>
+                </div>
+                <div class="caption">
+                    <h3><a href="{% url 'main_app:user_report_detail' report.id %}">{% if report.pet.name %} {{report.pet.name}} {%else%} {{report.pet.pet_breed.breed_title}} {%endif%}</a></h3><span class='small'>{{report.created}}</span>
+                    <p>Район: {{report.address.region}}
+                    {% if report.address.street %}, вул. {{report.address.street}}
+                    {% endif %}
+                    </p>
+                    <p>{{report.ident_det}}</p>
+                    
+                    <p><span class='small text-info'>Контакти: <a href="{% url 'main_app:user_page' report.user_id %}">{{report.user.username}}</a></span></p>
+                    <a href="{% url 'main_app:user_report_detail' report.id %}" class="btn btn-success">Детальніше</a>
+                </div>
+            </div>
+       </li>
+       {% endfor %}
+    </ul>
+    
+{% if reports_count > 10 %}
+<nav class="text-center">
+    <ul class="pagination simple-pagination">
+       {% if reports.has_previous%}
+       <li><a href="?{{page_request_var}}={{ reports.previous_page_number }}">
+            <i class="fa fa-chevron-left"></i>
+        </a></li>
+        {%else%}
+        <li class="disabled"><a href="#">
+            <i class="fa fa-chevron-left"></i>
+        </a></li>
+        {% endif %}
+        {% for page in  reports.paginator.page_range %}
+           {% ifequal page current_page %}
+            <li  class="active">
+            {%else%}
+            <li>
+            {%  endifequal  %}<a href="?{{page_request_var}}={{page}}">{{ page }}</a></li>
+        {% endfor %}
+        {% if my_reports.has_next%}
+           <li><a href="?{{page_request_var}}={{ reports.next_page_number }}">
+                <i class="fa fa-chevron-right"></i>
+            </a></li>
+            {% else %}
+            <li class="disabled"><a href="#">
+                <i class="fa fa-chevron-right"></i>
+            </a></li>
+            {% endif %}
+    </ul>
+</nav>
+   {% endif %}
+    
+</div>
+{%endblock%}

@@ -1,0 +1,267 @@
+
+{% extends 'main_app/user-base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Нова об'ява{% endblock %}
+
+{% block content %}
+<div id="content-wrapper">
+    <div class="row">
+   <ul class="nav nav-tabs">
+      <li class="active"><a href="#">Об'яви про втрачену тварину <span class="badge">0</span></a></li>
+      <li><a href="#">Об'яви про знайдену тварину <span class="badge">0</span></a></li>
+      <li><a href="#">Об'яви "віддам у добрі руки" <span class="badge">0</span></a></li>
+   </ul>
+</div>
+
+<ul class="row masonry user-report" data-columns>
+  {% for report in my_reports %}
+   <li class="item">
+       <div class="thumbnail">
+            <img src="{{ report.pet.pet_img.url }}" alt="" class="img-responsive"/>
+            <div class="caption">
+                <h3><a href="#">{{report.pet.name}}</a></h3><span class='small'>{{report.created}}</span>
+                <p>Район: {{report.address.region}}
+                {% if report.address.street %}, вул. {{report.address.street}}
+                {% endif %}
+                </p>
+                <p>{{report.ident_det}}</p>
+                <a href="{% url 'main_app:user_report_detail' report.id %}" class="btn btn-success">Детальніше</a>
+            </div>
+        </div>
+   </li>
+   {% endfor %}
+
+</ul>
+
+<nav class="text-center">
+    <ul class="pagination">
+      {% if reports.page.paginator.num_pages > 10 %}
+       <li class="disabled"><a href="#">
+            <i class="fa fa-chevron-left"></i>
+            <i class="fa fa-chevron-left"></i>
+        </a></li>
+        {% endif %}
+        <li class="disabled"><a href="#">
+            <i class="fa fa-chevron-left"></i>
+        </a></li>
+        <li class="active"><a href="#">1</a></li>
+        <li><a href="#">2</a></li>
+        <li><a href="#">3</a></li>
+        <li><a href="#">4</a></li>
+        <li><a href="#">
+            <i class="fa fa-chevron-right"></i>
+        </a></li>
+        {% if reports.page.paginator.num_pages > 10 %}
+        <li><a href="#">
+            <i class="fa fa-chevron-right"></i>
+            <i class="fa fa-chevron-right"></i>
+        </a></li>
+        {% endif %}
+    </ul>
+</nav>
+</div>
+
+{% endblock %}
+
+
+{% block modal %}
+
+<div class="modal fade" id="add_report">
+    <div class="modal-dialog add_report modal-md">
+        <div class="modal-content">
+            <div class="modal-header add_report_header">
+                <button class="close col-md-1" type="button" data-dismiss="modal">
+                &times;
+                </button>
+                <h5 class="modal-title col-md-6">Нова об'ява</h5>
+                <a href="#" class="col-md-4 col-md-offset-1 text-right">Перейти до моїх об'яв</a>
+            </div>
+            <form role="form" action="" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                <div class="modal-body row">
+                       <div class="col-sm-12">
+                           <div class="panel panel-default">
+                               <div class="panel-body add_report_body">
+                                 
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form1.report_type.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12" style="margin-bottom:0px;">{{form1.report_type.label_tag}}</label>
+                                      <div class="col-sm-12">
+                                           {% for radio in form1.report_type %}
+                                            <div class="radio">
+                                                <label  for="{{ radio.id_for_label }}">
+                                                     {{ radio.tag }}
+                                                     {{ radio.choice_label }} 
+                                                </label>
+                                            </div>
+                                            {% endfor %}
+                                      </div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.pet_type.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.pet_type.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.pet_type}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form4.breed_title.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form4.breed_title.label_tag}}</label>
+                                      <div class="col-sm-12">{{form4.breed_title}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.name.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.name.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.name}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.sex.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.sex.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.sex}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.pet_img.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.pet_img.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.pet_img}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.predominant_color.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.predominant_color.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.predominant_color}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.age.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.age.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.age}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.height.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.height.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.height}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.weight.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.weight.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.weight}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form6.coat_title.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form6.coat_title.label_tag}}</label>
+                                      <div class="col-sm-12">{{form6.coat_title}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form6.length.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form6.length.label_tag}}</label>
+                                      <div class="col-sm-12">{{form6.length}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.collar.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.collar.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.collar}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form2.ident_mark_feat.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form2.ident_mark_feat.label_tag}}</label>
+                                      <div class="col-sm-12">{{form2.ident_mark_feat}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form5.region.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form5.region.label_tag}}</label>
+                                      <div class="col-sm-12">{{form5.region}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form5.street.errors}}</span>
+                                      </div>
+                                      <div class="col-sm-12">{{form5.street}}</div>
+                                  </div>
+                                  
+                                  <div class="form-group">
+                                      <div class="col-sm-12">
+                                          <span class="text-danger small">{{form1.ident_det.errors}}</span>
+                                      </div>
+                                      <label class="control-label col-sm-12">{{form1.ident_det.label_tag}}</label>
+                                      <div class="col-sm-12">{{form1.ident_det}}</div>
+                                  </div>
+                               </div>
+                           </div>
+                       </div>
+                        
+
+                </div>
+                <div class="modal-footer">
+                  <div class="row">
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                           <button class="btn btn-success modal_reg_auth_go" type="submit">Додати об'яву</button>
+                           </div>
+                      </div>
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                            <button class="btn btn-info modal_reg_auth_exit" type="button" onClick="location.href='{% url 'main_app:user_reports'  %}'">Відмінити</button>
+                            </div>
+                      </div>
+                  </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script %}
+  
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#add_report').modal('show');
+    });
+</script>
+    
+{% endblock %}

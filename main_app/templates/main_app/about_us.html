@@ -1,0 +1,65 @@
+{% extends 'main_app/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Про нас!!!{% endblock %}
+
+
+{%block body%}
+<section id="about_counter-insaid">
+    <div class="container">
+        <div class="row">
+            <div class="section_header text-center">
+                <h3>Ми працюємо з 2009 року</h3>
+            </div>
+        </div>
+        <div class="row text-center">
+            <div class="couner_num_align col-md-3 col-md-offset-1">
+                <div class="card">
+                    <img src="{% static 'main_app/images/about/about_1.svg' %}" alt="Наші досягнення" class="img-responsive center-block">
+                    <h4>Повідомлено про<br>знайдених домашніх<br>улюбленців</h4>
+                </div>
+                <div class="counter_num">
+                    <span><h3>{{index_counter.k2}}</h3></span>
+                </div>
+            </div>
+            <div class="couner_num_align col-md-3">
+                <div class="card">
+                    <img src="{% static 'main_app/images/about/about_2.svg' %}" alt="Наші досягнення" class="img-responsive center-block">
+                    <h4>Скільки домашніх<br>улюбленців знайшли<br>нову сім'ю</h4>
+                </div>
+                <div class="counter_num" id="counter_count_5_symbol">
+                    <span><h3>{{index_counter.k3}}</h3></span>
+                </div>
+            </div>
+            <div class="couner_num_align col-md-3">
+                <div class="card">
+                    <img src="{% static 'main_app/images/about/about_3.svg' %}" alt="Наші досягнення" class="img-responsive center-block">
+                    <h4>Повідомлено про<br>втрачених домашніх<br>улюбленців</h4>
+                </div>
+                <div class="counter_num">
+                    <span><h3>{{index_counter.k1}}</h3></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div id="about-wrapper" class="text-center row" style="font-size:16px;">
+  <div class="col-md-12 text-info text-center"><p>Наша організація займається пошуком
+втрачених домашніх тварин у м Хмельницькому<br> 
+з 2009 року. За час роботи організації ми застосували
+багато новаторських ідей у нашій роботі.</p></div>
+   <h3 class="col-md-12 text-info text-center" style="margin-left:30px;">Наші контактні дані:</h3>
+    <ul class="about-user text-center">
+       <li class="item"><b>Адреса: </b><i>29016, Хмельницький<br>Проспект миру, буд. 76</i></li>
+        <li class="item"><b>Режим роботи: </b><i>з 10:00 до 21:00 щоденно</i></li>
+         <li class="item"><b>Телефони: </b><i>8 (097) 361-28-12</i></li>
+          <li class="item"><i>8 (093) 202-42-64</i></li>
+    </ul>
+</div>
+</div>
+
+    
+{%endblock%}

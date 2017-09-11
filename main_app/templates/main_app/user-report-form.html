@@ -1,0 +1,83 @@
+
+{% load app_filters %}
+
+
+ <html>
+     <head>
+        
+         <title>Title</title>
+         <style type="text/css">
+             body {
+                 font-weight: 200;
+                 font-size: 14px;
+             }
+             .header {
+                 font-size: 20px;
+                 font-weight: 100;
+                 text-align: center;
+                 color: #007cae;
+             }
+             .title {
+                 font-size: 22px;
+                 font-weight: 100;
+                /* text-align: right;*/
+                padding: 10px 20px 0px 20px;  
+             }
+             .title span {
+                 color: #007cae;
+             }
+             .details {
+                 padding: 10px 20px 0px 20px;
+                 text-align: left !important;
+                 /*margin-left: 40%;*/
+             }
+             .hrItem {
+                 border: none;
+                 height: 1px;
+                 /* Set the hr color */
+                 color: #333; /* old IE */
+                 background-color: #fff; /* Modern Browsers */
+             }
+         </style>
+     </head>
+     <body>
+         <div class="panel panel-default" id="chat-body">
+    <div class="panel-heading text-center"><h4>{{ report.report_type }}</h4></div>
+    <div class="panel-body">
+        <div class="caption col-md-8 col-md-offset-2 text-center">
+            <h1 style="margin-top:10px;"><b style="color:red;text-transform:uppercase;">Загубилася {{ report.pet.pet_type.title|get_pet_type }}!!!</b></h1>
+            <img src="{{ report.pet.pet_img.url }}" alt="" class="img-responsive"/>
+        </div>
+
+        <div class="caption col-md-10 col-md-offset-1 text-center">
+            <h1 style="margin-top:10px;">
+                <b style="color:red;">
+                {% if report.pet.name %}
+                {{report.pet.name}}{% endif %}{% if report.pet.age %}, {{report.pet.age}}</b>{% endif %} 
+            </h1>
+            <p>
+                {% if report.pet.pet_breed.breed_title %}<b>Порода домашнього улюбленця:</b> <i>{{report.pet.pet_breed.breed_title}}</i>
+                {% endif %} {% if report.pet.sex %}<b>Стать:</b> <i>{{ sex_dict|get_value_by_key:report.pet.sex }}</i>{% endif %}<br>
+                {% if report.pet.coat.coat_title %}<b>Тип шерсті: </b><i>{{ coat_title_dict|get_value_by_key:report.pet.coat.coat_title }} </i>{% endif %}
+                {% if report.pet.coat.length %}<b>Довжина шерсті: </b><i>{{ coat_length_dict|get_value_by_key:report.pet.coat.length }} </i>{% endif %}
+                {% if report.pet.predominant_color %}<b>Домінуючий колір: </b><i>{{ color_dict|get_value_by_key:report.pet.predominant_color }} </i>{% endif %}
+                {% if report.pet.height %}<b>Висота до плеча: </b><i>{{ height_dict|get_value_by_key_mod:report.pet.height }} </i>{% endif %}
+                {% if report.pet.weight %}<b>Довжина тулуба: </b><i>{{ weight_dict|get_value_by_key:report.pet.weight }} </i>{% endif %}
+            </p>
+            <p>
+                {% if report.pet.ident_mark_feat %}<b>Деталі для ідентифікації: </b><i>{{report.pet.ident_mark_feat}} </i>{% endif %}
+                {% if report.pet.collar %}<b>Ошейник: </b><i>{{report.pet.collar}} </i>{% endif %}</p>
+                {% if report.ident_det %}<p><b>Примітка (дата та опис місця втрати/знаходження): </b><i>{{report.ident_det}} </i>{% endif %}<br>
+            {% if report.address.region %}<b>Район: </b><i> {{report.address.region}}</i>{% endif %}
+                {% if report.address.street %}<i>, вул. {{report.address.street}}
+                {% endif %} </i>
+            </p>
+            <p><span class='small text-info'>{{report.created}}</span></p>
+
+            <a href="{% url 'main_app:report_generate' report.id %}" class="btn btn-primary">Згенерувати документ</a>
+    </div>
+
+    </div>
+</div>
+     </body>
+ </html>

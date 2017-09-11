@@ -1,0 +1,94 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="ua">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Реєстрація</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'main_app/css/bootstrap.css' %}" rel="stylesheet">
+     <link href="{% static 'main_app/css/style.css' %}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+<body style="background-color:#3F92D2;">
+
+
+<div class="modal fade" id="reg_form">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal" style="color:#fff;">
+                &times;
+                </button>
+                <h4 class="modal-title text-center">
+                {% if request.path == '/register/' %}
+                Реєстрація на сайті
+                {% elif request.path == '/login/' %}
+                Вхід в систему
+                {% endif %}
+                </h4>
+            </div>
+            <form role="form" action="" method="post" enctype="multipart/form-data">
+               {% csrf_token %}
+               <div class="modal-body">
+                   <div class="row">
+                      {% if request.path == '/login/' %}
+                          {% if errors %}
+                              <ul>
+                                {% for error in errors %}
+                                <li class="text-danger small">{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                           {% endif %}
+                      {% endif %}
+                       {% include 'main_app/form-template.html' %}
+                    </div>  
+                </div>
+                <div class="modal-footer">
+                    <div class="row">
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                              <button class="btn btn-success modal_reg_auth_go" type="submit">
+                              {% if request.path == '/register/' %}
+                                Зареєструватися
+                                {% elif request.path == '/login/' %}
+                                Увійти
+                                {% endif %}
+                              </button>
+                          </div>
+                      </div>
+                      <div class="col-sm-6">
+                          <div class="form-group">
+                              <button class="btn btn-info modal_reg_auth_exit" type="button" data-dismiss="modal" onClick="location.href='{% url "main_app:index" %}'">Відмінити</button>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'main_app/js/bootstrap.js' %}"></script>
+    
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#reg_form').modal('show');
+    });
+</script>
+    
+  </body>
+</html>
